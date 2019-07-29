@@ -17,11 +17,11 @@ router.post('/register', uniqueNameCheck, (req, res) => {
 
         Users.addUser(user)
             .then(saved => {
-                res.status(201).json(saved)
+                res.status(201).json(user, saved)
             })
             .catch(err => {
                 res.status(500).json({
-                    message: (user, "There was a registration error.")
+                    message: ("There was a registration error.")
                 })
             })
     } else {
@@ -60,26 +60,6 @@ router.post('/login', (req, res) => {
         })
     }
 
-})
-
-router.get('/logout', (req, res) => {
-    if (req.session) {
-        req.session.destroy(err => {
-            if (err) {
-                res.status(500).json({
-                    message: "There was an error logging out."
-                })
-            } else {
-                res.status(200).json({
-                    message: "You have been logged out!"
-                })
-            }
-        })
-    } else {
-        res.status(200).json({
-            message: 'You are not logged in.'
-        })
-    }
 })
 
 function generateToken(user) {

@@ -33,6 +33,6 @@ function getUserByDepartment(department) {
 }
 
 async function addUser(user) {
-    const [id] = await db('users').insert(user)
-    return getUserByName(user.username)
+    const [id] = await db('users').insert(user, "id")
+    return getUserById(id)
 }

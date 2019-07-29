@@ -1,5 +1,5 @@
 const request = require('supertest')
-const db = require('../database/dbConfig.js')
+const db = require('../data/dbConfig.js')
 const server = require('./server.js')
 
 describe('server', () => {
@@ -7,14 +7,14 @@ describe('server', () => {
         expect(process.env.DB_env).toBe('testing')
     })
 
-    describe('POST /api/register', () => {
+    describe('POST /api/auth/register', () => {
         it('should return 201 OK and new username', () => {
             const user = {
                 username: `jarred`,
                 password: 'nah'
             }
             return request(server)
-                .post('/api/register')
+                .post('/api/auth/register')
                 .send(user)
                 .then(res => {
                     expect(res.status).toBe(201)
@@ -31,7 +31,7 @@ describe('server', () => {
             const error = "A user with this name already exists."
 
             return request(server)
-                .post('/api/register')
+                .post('/api/auth/register')
                 .send(user)
                 .then(res => {
                     expect(res.status).toBe(400)
@@ -41,11 +41,11 @@ describe('server', () => {
 
         it('requests without a username or password should return 400', () => {
             const user = {
-                username: "jarred"
+                username: "jarred2"
             }
             const error = "Username & password are required."
             return request(server)
-                .post('/api/register')
+                .post('/api/auth/register')
                 .send(user)
                 .then(res => {
                     expect(res.status).toBe(400)
@@ -62,7 +62,7 @@ describe('server', () => {
             }
 
             return request(server)
-                .post('/api/login')
+                .post('/api/auth/login')
                 .send(user)
                 .then(res => {
                     expect(res.status).toBe(200)
@@ -75,7 +75,7 @@ describe('server', () => {
             const error = "Username & password are required."
 
             return request(server)
-                .post('/api/login')
+                .post('/api/auth/login')
                 .send(user)
                 .then(res => {
                     expect(res.status).toBe(400)

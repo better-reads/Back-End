@@ -28,7 +28,7 @@ router.post('/register', uniqueNameCheck, (req, res) => {
             })
     } else {
         res.status(400).json({
-            message: "Username & Password required to register."
+            message: "Username & password are required."
         })
     }
 })
@@ -58,8 +58,8 @@ router.post('/login', (req, res) => {
                 })
             })
     } else {
-        res.status(401).json({
-            message: "Username or password are missing."
+        res.status(400).json({
+            message: "Username & password are required."
         })
     }
 
@@ -85,7 +85,7 @@ async function uniqueNameCheck(req, res, next) {
     try {
         const user = await Users.getUserByName(username)
         user
-            ? res.status(401).json({
+            ? res.status(400).json({
                 message: "A user with this name already exists."
             })
             : next()

@@ -9,7 +9,6 @@ router.post('/register', uniqueNameCheck, (req, res) => {
     const user = {
         username: req.body.username,
         password: req.body.password,
-        department: req.body.department
     }
 
     if (user.username && user.password) {

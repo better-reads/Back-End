@@ -4,20 +4,12 @@ exports.up = function (knex, Promise) {
         saved_list.increments();
 
         saved_list
-            .string('user_id')
+            .integer('user_id')
             .notNullable()
-            .references('id')
-            .inTable('users')
-            .onUpdate('CASCADE')
-            .onDelete('CASCADE')
 
         saved_list
-            .string('book_id')
+            .float('book_id')
             .notNullable()
-            .references('id')
-            .inTable('books')
-            .onUpdate('CASCADE')
-            .onDelete('CASCADE')
 
         saved_list
             .boolean('liked')

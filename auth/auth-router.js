@@ -17,7 +17,8 @@ router.post('/register', uniqueNameCheck, (req, res) => {
 
         Users.addUser(user)
             .then(saved => {
-                res.status(201).json(user, saved)
+                console.log(user)
+                res.status(201).json(saved)
             })
             .catch(err => {
                 res.status(500).json({

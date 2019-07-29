@@ -15,7 +15,7 @@ router.post('/register', uniqueNameCheck, (req, res) => {
     if (user.username && user.password) {
         const hash = bcrypt.hashSync(user.password, 10);
         user.password = hash
-        console.log(user)
+
         Users.addUser(user)
             .then(saved => {
                 console.log(saved)
@@ -23,7 +23,7 @@ router.post('/register', uniqueNameCheck, (req, res) => {
             })
             .catch(err => {
                 res.status(500).json({
-                    message: ("There was a registration error.")
+                    message: "There was a registration error."
                 })
             })
     } else {

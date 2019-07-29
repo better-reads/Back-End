@@ -14,10 +14,10 @@ router.post('/register', uniqueNameCheck, (req, res) => {
     if (user.username && user.password) {
         const hash = bcrypt.hashSync(user.password, 10);
         user.password = hash
-
+        console.log(user)
         Users.addUser(user)
             .then(saved => {
-                console.log(user)
+                console.log(saved)
                 res.status(201).json(saved)
             })
             .catch(err => {

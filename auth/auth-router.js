@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const Users = require('../users/users-model.js')
 const secrets = require('../config/secrets.js')
 
+//Register a new user
 router.post('/register', uniqueNameCheck, (req, res) => {
     const user = {
         username: req.body.username,
@@ -32,6 +33,7 @@ router.post('/register', uniqueNameCheck, (req, res) => {
     }
 })
 
+//Login a user
 router.post('/login', (req, res) => {
     const { username, password } = req.body
 
@@ -83,7 +85,7 @@ async function uniqueNameCheck(req, res, next) {
     try {
         const user = await Users.getUserByName(username)
         user
-            ? res.status(400).json({
+            ? res.status(401).json({
                 message: "A user with this name already exists."
             })
             : next()

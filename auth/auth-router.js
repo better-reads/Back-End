@@ -22,7 +22,7 @@ router.post('/register', uniqueNameCheck, (req, res) => {
             })
             .catch(err => {
                 res.status(500).json({
-                    message: "There was a registration error."
+                    message: (user, "There was a registration error.")
                 })
             })
     } else {

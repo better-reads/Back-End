@@ -7,19 +7,19 @@ exports.up = function (knex, Promise) {
             .integer('user_id')
             .notNullable()
             .unsigned()
-            .references("id")
-            .inTable("users")
-            .onUpdate("CASCADE")
-            .onDelete("CASCADE")
+            .references('id')
+            .inTable('users')
+            .onUpdate('CASCADE')
+            .onDelete('CASCADE')
 
         saved_list
             .integer('book_id')
             .notNullable()
             .unsigned()
-            .references("id")
-            .inTable("books")
-            .onUpdate("CASCADE")
-            .onDelete("CASCADE")
+            .references('id')
+            .inTable('books')
+            .onUpdate('CASCADE')
+            .onDelete('CASCADE')
 
         saved_list
             .boolean('liked')

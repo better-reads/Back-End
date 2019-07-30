@@ -25,6 +25,7 @@ router.post('/add', async (req, res) => {
     const newBook = {
         title: req.body.title
     }
+
     try {
         const book = await Books.addBookToDb(newBook)
         res.status(201).json(book)
@@ -32,6 +33,14 @@ router.post('/add', async (req, res) => {
         res.status(500).json({
             message: "Failed to save book."
         })
+    }
+})
+
+router.get('/recommend', async (req, res) => {
+    const input = {
+        text: req.body.text,
+        genre: req.body.genre,
+        author: req.body.author
     }
 })
 

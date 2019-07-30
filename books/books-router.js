@@ -1,18 +1,18 @@
 const express = require('express')
+const axios = require('axios')
 
 const Books = require('./books-model.js')
 
 const router = express.Router();
 
-router.post('/save/:id', bookInDbCheck, async (req, res) => {
-    const newBook = {
+router.post('/save/:id', bookInDbCheck, bookAlreadySaved, async (req, res) => {
+    const addBook = {
         user_id: req.params.id,
-        isbn: req.body.isbn
+        book_id: res.bookID
     }
 
-
     try {
-        const savedBook = await Books.saveBookToList(newBook);
+        const savedBook = await Books.saveBookToList(addBook);
         res.status(201).json(savedBook)
     } catch (err) {
         res.status(500).json({
@@ -23,13 +23,12 @@ router.post('/save/:id', bookInDbCheck, async (req, res) => {
 
 router.post('/add', async (req, res) => {
     const newBook = {
-        title: req.body.title,
         isbn: req.body.isbn
     }
 
     try {
         const book = await Books.addBookToDb(newBook)
-        res.status(201).json(book)
+        res.status(201).json(newBook)
     } catch (err) {
         res.status(500).json({
             message: "Failed to save book."
@@ -61,13 +60,27 @@ async function bookInDbCheck(req, res, next) {
         title: req.body.title
     }
 
-    const bookCheck = await Books.findBookById(newBook.isbn)
+    const bookCheck = await Books.findBookByIsbn(newBook.isbn)
 
-    if (bookCheck.title) {
+    if (bookCheck) {
+        res.bookID = bookCheck.id
+        next()
+    } else {
         const book = await Books.addBookToDb(newBook)
+        res.bookID = book.id
+        next()
     }
+}
 
-    next()
+async function bookAlreadySaved(req, res, next) {
+    const { id } = req.params
+
+    const saveCheck = await Books.getSavedBookList(id)
+    saveCheck.find(book => book.id === res.bookID)
+        ? res.status(404).json({
+            message: "This book is already saved to your list."
+        })
+        : next()
 }
 
 module.exports = router

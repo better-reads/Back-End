@@ -20,9 +20,6 @@ exports.up = function (knex, Promise) {
             .inTable('books')
             .onUpdate('CASCADE')
             .onDelete('CASCADE')
-
-        saved_list
-            .boolean('liked')
     });
 };
 

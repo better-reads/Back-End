@@ -68,8 +68,7 @@ router.post('/login', (req, res) => {
 function generateToken(user) {
     const jwtPayload = {
         subject: user.id,
-        username: user.username,
-        department: user.department
+        username: user.username
     }
 
     const jwtOptions = {

@@ -4,12 +4,12 @@ const Books = require('./books-model.js')
 
 const router = express.Router();
 
-router.post('/save/:id', async (req, res) => {
+router.post('/save/:id', bookInDbCheck, async (req, res) => {
     const newBook = {
-        book_id: req.body.book_id,
         user_id: req.params.id,
-        liked: req.body.liked
+        isbn: req.body.isbn
     }
+
 
     try {
         const savedBook = await Books.saveBookToList(newBook);
@@ -23,7 +23,8 @@ router.post('/save/:id', async (req, res) => {
 
 router.post('/add', async (req, res) => {
     const newBook = {
-        title: req.body.title
+        title: req.body.title,
+        isbn: req.body.isbn
     }
 
     try {
@@ -42,6 +43,31 @@ router.get('/recommend', async (req, res) => {
         genre: req.body.genre,
         author: req.body.author
     }
+    try {
+        const books = await Books.randomBooks()
+        res.status(201).json(books)
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed to retrieve books."
+        })
+    }
 })
+
+//middleware
+
+async function bookInDbCheck(req, res, next) {
+    const newBook = {
+        isbn: req.body.isbn,
+        title: req.body.title
+    }
+
+    const bookCheck = await Books.findBookById(newBook.isbn)
+
+    if (bookCheck.title) {
+        const book = await Books.addBookToDb(newBook)
+    }
+
+    next()
+}
 
 module.exports = router

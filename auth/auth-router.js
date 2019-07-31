@@ -76,7 +76,7 @@ router.put('/:id', async (req, res) => {
     console.log(changes)
     try {
         const user = await Users.getUserById(id)
-
+        console.log(user)
         if (user) {
             const updatedUser = await Users.updateUser(changes, id)
             res.status(201).json(updatedUser)

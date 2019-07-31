@@ -15,6 +15,7 @@ async function addUser(user) {
 
 async function updateUser(changes, id) {
     const updated = await db('users').where({ id }).update(changes, "id")
+    console.log(updated)
     return getUserById(id)
 }
 
@@ -26,7 +27,7 @@ function getUsers() {
 function getUserById(id) {
     return db('users')
         .where({ id })
-        .select('id', 'username')
+        .select('id', 'username', 'email', 'bio')
         .first()
 }
 

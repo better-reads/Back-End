@@ -3,6 +3,8 @@ const express = require('express')
 const Books = require('./books-model.js')
 
 const restricted = require('../auth/restricted-middleware.js')
+const bookAlreadySaved = require('../middleware/bookAlreadySaved.js')
+const bookInDbCheck = require('../middleware/bookInDbCheck.js')
 
 const router = express.Router();
 
@@ -59,7 +61,7 @@ router.delete('/save/:user_id', restricted, async (req, res) => {
 })*/
 
 //Get all of the Books!
-router.get('/', async (req, res) => {
+/*router.get('/', async (req, res) => {
     try {
         const books = await Books.getListOfBooks()
         res.status(201).json(books)
@@ -68,34 +70,8 @@ router.get('/', async (req, res) => {
             message: "There was an error retrieving the books."
         })
     }
-})
+})*/
 
-//middleware
-//Middleware that checks to see if the book is in our database. It will then add it to the database. Either way, it passes the id of the book to the function.
-async function bookInDbCheck(req, res, next) {
-    const newBook = req.body
-    const bookCheck = await Books.findBookByIsbn(newBook.isbn_10)
 
-    if (bookCheck) {
-        res.bookID = bookCheck.id
-        next()
-    } else {
-        const book = await Books.addBookToDb(newBook)
-        res.bookID = book.id
-        next()
-    }
-}
-
-//Middleware that checks to see if the user has already saved the book to their list.
-async function bookAlreadySaved(req, res, next) {
-    const { id } = req.params
-
-    const saveCheck = await Books.getSavedBookList(id)
-    saveCheck.find(book => book.id === res.bookID)
-        ? res.status(404).json({
-            message: "This book is already saved to your list."
-        })
-        : next()
-}
 
 module.exports = router

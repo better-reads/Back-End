@@ -65,6 +65,33 @@ router.post('/login', (req, res) => {
 
 })
 
+router.put('/:id', async (req, res) => {
+    const { id } = req.params
+    const changes = req.body
+
+    if (changes.password) {
+        const hash = bcrypt.hashSync(changes.password, 10);
+        changes.password = hash
+    }
+    console.log(changes)
+    try {
+        const user = await Users.getUserById(id)
+
+        if (user) {
+            const updatedUser = await Users.updateUser(changes, id)
+            res.status(201).json(updatedUser)
+        } else {
+            res.status(400).json({
+                message: 'Could not find user with the given id.'
+            })
+        }
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed to update the user."
+        })
+    }
+})
+
 function generateToken(user) {
     const jwtPayload = {
         subject: user.id,

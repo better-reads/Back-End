@@ -2,7 +2,7 @@ const express = require('express')
 
 const Books = require('./books-model.js')
 
-const restricted = require('../auth/restricted-middleware.js')
+const restricted = require('../middleware/restricted-middleware.js')
 const bookAlreadySaved = require('../middleware/bookAlreadySaved.js')
 const bookInDbCheck = require('../middleware/bookInDbCheck.js')
 

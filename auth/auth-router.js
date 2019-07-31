@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const Users = require('../users/users-model.js')
 const secrets = require('../config/secrets.js')
 
-const restricted = require('./restricted-middleware.js')
+const restricted = require('../middleware/restricted-middleware.js')
 
 //Register a new user
 router.post('/register', uniqueNameCheck, (req, res) => {

@@ -1,10 +1,10 @@
 const express = require('express')
-const axios = require('axios')
 
 const Books = require('./books-model.js')
 
 const router = express.Router();
 
+//saves a book to the user's saved list.
 router.post('/save/:id', bookInDbCheck, bookAlreadySaved, async (req, res) => {
     const addBook = {
         user_id: req.params.id,
@@ -21,14 +21,13 @@ router.post('/save/:id', bookInDbCheck, bookAlreadySaved, async (req, res) => {
     }
 })
 
+//adds a book to our database.
 router.post('/add', async (req, res) => {
-    const newBook = {
-        isbn: req.body.isbn
-    }
+    const { isbn_10 } = req.body
 
     try {
-        const book = await Books.addBookToDb(newBook)
-        res.status(201).json(newBook)
+        const book = await Books.addBookToDb(isbn_10)
+        res.status(201).json(book)
     } catch (err) {
         res.status(500).json({
             message: "Failed to save book."
@@ -36,31 +35,23 @@ router.post('/add', async (req, res) => {
     }
 })
 
-router.get('/recommend', async (req, res) => {
-    const input = {
-        text: req.body.text,
-        genre: req.body.genre,
-        author: req.body.author
-    }
+//Get all of the Books!
+router.get('/', async (req, res) => {
     try {
-        const books = await Books.randomBooks()
+        const books = await Books.getListOfBooks()
         res.status(201).json(books)
     } catch (err) {
         res.status(500).json({
-            message: "Failed to retrieve books."
+            message: "There was an error retrieving the books."
         })
     }
 })
 
 //middleware
-
+//Middleware that checks to see if the book is in our database. It will then add it to the database. Either way, it passes the id of the book to the function.
 async function bookInDbCheck(req, res, next) {
-    const newBook = {
-        isbn: req.body.isbn,
-        title: req.body.title
-    }
-
-    const bookCheck = await Books.findBookByIsbn(newBook.isbn)
+    const newBook = req.body
+    const bookCheck = await Books.findBookByIsbn(newBook.isbn_10)
 
     if (bookCheck) {
         res.bookID = bookCheck.id
@@ -72,6 +63,7 @@ async function bookInDbCheck(req, res, next) {
     }
 }
 
+//Middleware that checks to see if the user has already saved the book to their list.
 async function bookAlreadySaved(req, res, next) {
     const { id } = req.params
 

@@ -3,6 +3,7 @@ const db = require('../data/dbConfig.js')
 const server = require('./server.js')
 
 describe('server', () => {
+    let token
     it('db environment set to testing', () => {
         expect(process.env.DB_env).toBe('testing')
     })
@@ -66,6 +67,8 @@ describe('server', () => {
                 .send(user)
                 .then(res => {
                     expect(res.status).toBe(200)
+                    token = res.body.token
+                    console.log(token)
                 })
         })
         it('requests without a login or password should return 400', () => {

@@ -79,6 +79,7 @@ function generateToken(user) {
 }
 
 //middleware
+//Checks to see if the username is already in use.
 async function uniqueNameCheck(req, res, next) {
     const { username } = req.body
     try {

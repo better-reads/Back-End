@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 const Users = require('../users/users-model.js')
 const secrets = require('../config/secrets.js')
 
+const restricted = require('./restricted-middleware.js')
+
 //Register a new user
 router.post('/register', uniqueNameCheck, (req, res) => {
     const user = {
@@ -66,7 +68,7 @@ router.post('/login', (req, res) => {
 })
 
 //Update user. Allows you to update any or all of the user's fields (username, password, email, bio).
-router.put('/:id', async (req, res) => {
+router.put('/:id', restricted, async (req, res) => {
     const { id } = req.params
     const changes = req.body
 
@@ -74,21 +76,26 @@ router.put('/:id', async (req, res) => {
         const hash = bcrypt.hashSync(changes.password, 10);
         changes.password = hash
     }
-    console.log(changes)
-    try {
-        const user = await Users.getUserById(id)
-        console.log(user)
-        if (user) {
-            const updatedUser = await Users.updateUser(changes, id)
-            res.status(201).json(updatedUser)
-        } else {
-            res.status(400).json({
-                message: 'Could not find user with the given id.'
+
+    if (req.jwtToken.subject == id) {
+        try {
+            const user = await Users.getUserById(id)
+            if (user) {
+                const updatedUser = await Users.updateUser(changes, id)
+                res.status(201).json(updatedUser)
+            } else {
+                res.status(400).json({
+                    message: 'Could not find user with the given id.'
+                })
+            }
+        } catch (err) {
+            res.status(500).json({
+                message: "Failed to update the user."
             })
         }
-    } catch (err) {
-        res.status(500).json({
-            message: "Failed to update the user."
+    } else {
+        res.status(401).json({
+            message: "Users can only update their own information."
         })
     }
 })

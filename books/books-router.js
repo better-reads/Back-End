@@ -21,6 +21,27 @@ router.post('/save/:id', bookInDbCheck, bookAlreadySaved, async (req, res) => {
     }
 })
 
+router.delete('/save/:user_id', async (req, res) => {
+    const { user_id } = req.params
+    const { book_id } = req.body
+
+    try {
+        const deleted = await Books.deleteBookFromList(user_id, book_id)
+
+        if (deleted) {
+            res.status(201).json({ deleted })
+        } else {
+            res.status(404).json({
+                message: 'Could not find book with given id'
+            });
+        }
+    } catch (err) {
+        res.status(500).json({
+            message: 'Failed to delete book.'
+        });
+    }
+})
+
 //adds a book to our database.
 router.post('/add', async (req, res) => {
     const { isbn_10 } = req.body

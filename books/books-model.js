@@ -5,6 +5,7 @@ module.exports = {
     findBookById,
     findBookByIsbn,
     saveBookToList,
+    deleteBookFromList,
     getSavedBookList,
     getListOfBooks
 }
@@ -50,6 +51,11 @@ function findBookByIsbn(isbn_10) {
 async function saveBookToList(book) {
     const [id] = await db('saved_list').insert(book, "id")
     return getSavedBookList(book.user_id)
+}
+
+async function deleteBookFromList(user_id, book_id) {
+    const deleted = await db('saved_list').where({ user_id }).andWhere({ book_id }).del()
+    return deleted
 }
 
 function getSavedBookList(user_id) {

@@ -12,7 +12,7 @@ const router = express.Router();
 router.post('/save/:id', restricted, bookInDbCheck, bookAlreadySaved, async (req, res) => {
     const addBook = {
         user_id: req.params.id,
-        book_id: res.bookID
+        book_id: res.bookID //bookID comes from the bookInDbCheck middleware
     }
 
     try {
@@ -72,6 +72,17 @@ router.delete('/save/:user_id', restricted, async (req, res) => {
         })
     }
 })*/
+
+//Sends entered description to the database and sends back recommended books.
+router.get('/', async (req, res) => {
+    try {
+        const { description } = req.body
+    } catch {
+        res.status(500).json({
+            message: "There is no data to return."
+        })
+    }
+})
 
 
 

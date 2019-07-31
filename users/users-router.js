@@ -37,7 +37,7 @@ router.get('/:id', async (req, res) => {
         res.status(200).json(user)
     } catch (err) {
         res.status(500).json({
-            message: "There was an error locatin the user."
+            message: "There was an error locating the user."
         })
     }
 })

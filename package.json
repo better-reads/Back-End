@@ -1,0 +1,41 @@
+{
+  "name": "better-reads",
+  "version": "1.0.0",
+  "description": "Better Reads back end",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon index.js",
+    "start": "node index.js",
+    "test": "cross-env DB_ENV=testing jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/better-reads/Back-End"
+  },
+  "keywords": [],
+  "author": "Jarred Stanford",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/better-reads/Back-End/issues"
+  },
+  "homepage": "https://github.com/better-reads/Back-End#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "cross-env": "^5.2.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "helmet": "^3.18.0",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.17.0",
+    "knex-cleaner": "^1.2.1",
+    "pg": "^7.12.0",
+    "sqlite3": "^4.0.8"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2",
+    "jest": "^24.8.0"
+  }
+}

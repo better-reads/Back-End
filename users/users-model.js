@@ -14,7 +14,7 @@ async function addUser(user) {
 }
 
 async function updateUser(changes, id) {
-    const updated = await db('users').where({ id }).update(changes)
+    const updated = await db('users').where({ id }).update(changes, "id")
     return getUserById(id)
 }
 

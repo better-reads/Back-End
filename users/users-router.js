@@ -3,6 +3,8 @@ const express = require('express')
 const Users = require('./users-model.js')
 const Books = require('../books/books-model.js')
 
+const restricted = require('../auth/restricted-middleware.js')
+
 const router = express.Router()
 
 //Get a list of a user's saved books by User ID

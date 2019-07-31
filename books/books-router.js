@@ -2,10 +2,12 @@ const express = require('express')
 
 const Books = require('./books-model.js')
 
+const restricted = require('../auth/restricted-middleware.js')
+
 const router = express.Router();
 
 //saves a book to the user's saved list.
-router.post('/save/:id', bookInDbCheck, bookAlreadySaved, async (req, res) => {
+router.post('/save/:id', restricted, bookInDbCheck, bookAlreadySaved, async (req, res) => {
     const addBook = {
         user_id: req.params.id,
         book_id: res.bookID
@@ -21,7 +23,7 @@ router.post('/save/:id', bookInDbCheck, bookAlreadySaved, async (req, res) => {
     }
 })
 
-router.delete('/save/:user_id', async (req, res) => {
+router.delete('/save/:user_id', restricted, async (req, res) => {
     const { user_id } = req.params
     const { book_id } = req.body
 
@@ -43,7 +45,7 @@ router.delete('/save/:user_id', async (req, res) => {
 })
 
 //adds a book to our database.
-router.post('/add', async (req, res) => {
+/*router.post('/add', async (req, res) => {
     const { isbn_10 } = req.body
 
     try {
@@ -54,7 +56,7 @@ router.post('/add', async (req, res) => {
             message: "Failed to save book."
         })
     }
-})
+})*/
 
 //Get all of the Books!
 router.get('/', async (req, res) => {

@@ -65,6 +65,7 @@ router.post('/login', (req, res) => {
 
 })
 
+//Update user. Allows you to update any or all of the user's fields (username, password, email, bio).
 router.put('/:id', async (req, res) => {
     const { id } = req.params
     const changes = req.body
@@ -92,6 +93,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
+//Middleware used to generate a new JSON token
 function generateToken(user) {
     const jwtPayload = {
         subject: user.id,

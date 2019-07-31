@@ -8,7 +8,7 @@ const bookInDbCheck = require('../middleware/bookInDbCheck.js')
 
 const router = express.Router();
 
-//saves a book to the user's saved list.
+//saves a book to the user's saved list. Must be logged in to access.
 router.post('/save/:id', restricted, bookInDbCheck, bookAlreadySaved, async (req, res) => {
     const addBook = {
         user_id: req.params.id,
@@ -25,6 +25,7 @@ router.post('/save/:id', restricted, bookInDbCheck, bookAlreadySaved, async (req
     }
 })
 
+//Deletes a book from the user's list. Must be logged in to access.
 router.delete('/save/:user_id', restricted, async (req, res) => {
     const { user_id } = req.params
     const { book_id } = req.body

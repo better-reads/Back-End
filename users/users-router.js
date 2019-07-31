@@ -13,7 +13,14 @@ router.get('/list/:id', async (req, res) => {
 
     try {
         const bookList = await Books.getSavedBookList(id)
-        res.status(200).json(bookList)
+        if (bookList.length > 0) {
+            res.status(200).json(bookList)
+        } else {
+            res.status(401).json({
+                message: "The user has no books saved to their list."
+            })
+        }
+
     } catch (err) {
         res.status(500).json({
             message: "There was an error locating the user's list."

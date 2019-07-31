@@ -80,6 +80,7 @@ router.put('/:id', restricted, async (req, res) => {
     if (req.jwtToken.subject == id) {
         try {
             const user = await Users.getUserById(id)
+
             if (user) {
                 const updatedUser = await Users.updateUser(changes, id)
                 res.status(201).json(updatedUser)

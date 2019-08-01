@@ -31,7 +31,7 @@ function getUsers() {
 function getUserById(id) {
     return db('users')
         .where({ id })
-        .select('id', 'username', 'email', 'bio', 'country', 'email-notifications')
+        .select('id', 'username', 'email', 'bio', 'country', 'emailNotifications', 'firstName', 'lastName')
         .first()
 }
 

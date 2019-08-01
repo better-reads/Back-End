@@ -8,9 +8,11 @@ exports.up = function (knex) {
             .unique();
         users.string('password', 128)
             .notNullable();
+        users.string('firstName')
+        users.string('lastName')
         users.string('bio')
         users.string('email')
-        users.boolean('email-notifications')
+        users.boolean('emailNotifications')
         users.string('country')
     });
 };

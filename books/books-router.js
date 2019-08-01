@@ -30,8 +30,6 @@ router.delete('/save/:user_id', restricted, async (req, res) => {
     const { user_id } = req.params
     let { book_id } = req.body
 
-
-
     try {
 
         if (req.body.isbn) {
@@ -44,7 +42,7 @@ router.delete('/save/:user_id', restricted, async (req, res) => {
         if (deleted) {
             res.status(201).json({ deleted })
         } else {
-            res.status(404).json({
+            res.status(401).json({
                 message: 'Could not find book with given id'
             });
         }

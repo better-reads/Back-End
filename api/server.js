@@ -39,7 +39,7 @@ server.use('/api/books', BooksRouter)
 
 
 server.get('/', (req, res) => {
-    res.status(200).json("Hi")
+    res.status(200).json("Welcome to the Better Reads database!")
 })
 
 module.exports = server;

@@ -28,9 +28,17 @@ router.post('/save/:id', restricted, bookInDbCheck, bookAlreadySaved, async (req
 //Deletes a book from the user's list. Must be logged in to access.
 router.delete('/save/:user_id', restricted, async (req, res) => {
     const { user_id } = req.params
-    const { book_id } = req.body
+    let { book_id } = req.body
+
+
 
     try {
+
+        if (req.body.isbn) {
+            const book = await Books.findBookByIsbn(req.body.isbn)
+            book_id = book.id
+        }
+
         const deleted = await Books.deleteBookFromList(user_id, book_id)
 
         if (deleted) {

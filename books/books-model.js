@@ -24,9 +24,9 @@ function findBookById(id) {
 }
 
 //Retrieves a book from the database using its ISBN.
-function findBookByIsbn(isbn_10) {
+function findBookByIsbn(isbn) {
     return db('books')
-        .where({ isbn_10 })
+        .where({ isbn })
         .first()
 }
 
@@ -47,12 +47,12 @@ function getSavedBookList(user_id) {
     return db('saved_list as s')
         .innerJoin('books as b', 's.book_id', 'b.id')
         .where({ user_id })
-        .select('b.id', 'b.title', 'b.author', 'b.isbn_10')
+        .select('b.id', 'b.title', 'b.author', 'b.isbn')
 }
 
 //Retrieves list of all books in the DB.
 function getListOfBooks() {
     return db('saved_list as s')
         .innerJoin('books as b', 's.book_id', 'b.id')
-        .select('s.user_id', 's.book_id', 'b.isbn_10', 'b.title', 'b.author')
+        .select('s.user_id', 's.book_id', 'b.isbn', 'b.title', 'b.author')
 }

@@ -70,7 +70,7 @@ router.post('/login', (req, res) => {
 
 })
 
-//Update user. Allows you to update any or all of the user's fields (username, password, email, bio).
+//Update user. Allows you to update any or all of the user's fields (username, password, email, bio, email notifications, country).
 router.put('/:id', restricted, async (req, res) => {
     const { id } = req.params
     const changes = req.body
@@ -79,7 +79,7 @@ router.put('/:id', restricted, async (req, res) => {
         const hash = bcrypt.hashSync(changes.password, 10);
         changes.password = hash
     }
-
+    console.log(req.jwtToken, id)
     if (req.jwtToken.subject == id) {
         try {
             const user = await Users.getUserById(id)

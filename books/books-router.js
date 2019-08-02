@@ -59,7 +59,7 @@ router.delete('/save/:user_id', restricted, async (req, res) => {
 router.post('/recommend', (req, res) => {
     const { description } = req.body
 
-    axios.get(`http://better-reads-cors-vector-2.rvpsipbyha.us-east-1.elasticbeanstalk.com/${description}`)
+    axios.get(`http://brbhtest-env-1.ssrvdevc34.us-east-1.elasticbeanstalk.com/${description}`)
         .then(resp => {
             console.log(resp.data)
             res.send({ list: resp.data })

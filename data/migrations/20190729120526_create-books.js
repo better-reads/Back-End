@@ -3,7 +3,7 @@ exports.up = function (knex, Promise) {
     return knex.schema.createTable('books', books => {
         books.increments();
         books
-            .string('isbn_10')
+            .string('isbn')
             .notNullable()
             .unique()
         books.string('title')

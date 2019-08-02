@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 const Users = require('../users/users-model.js')
 const secrets = require('../config/secrets.js')
 
+const restricted = require('../middleware/restricted-middleware.js')
+
 //Register a new user
 router.post('/register', uniqueNameCheck, (req, res) => {
     const user = {
@@ -39,12 +41,15 @@ router.post('/login', (req, res) => {
 
     if (username && password) {
         Users.getUserByName(username)
-            .then(user => {
-
-                if (user && bcrypt.compareSync(password, user.password)) {
-                    const token = generateToken(user)
+            .then(loggedInUser => {
+                const user = {
+                    id: loggedInUser.id,
+                    username: loggedInUser.username
+                }
+                if (user && bcrypt.compareSync(password, loggedInUser.password)) {
+                    const token = generateToken(loggedInUser)
                     res.status(200).json({
-                        message: `${user.username} has successfully logged in!`, token
+                        message: `${user.username} has successfully logged in!`, token, user
                     })
                 } else {
                     res.status(401).json({
@@ -65,6 +70,41 @@ router.post('/login', (req, res) => {
 
 })
 
+//Update user. Allows you to update any or all of the user's fields (username, password, email, bio, email notifications, country).
+router.put('/:id', restricted, async (req, res) => {
+    const { id } = req.params
+    const changes = req.body
+
+    if (changes.password) {
+        const hash = bcrypt.hashSync(changes.password, 10);
+        changes.password = hash
+    }
+    console.log(req.jwtToken, id)
+    if (req.jwtToken.subject == id) {
+        try {
+            const user = await Users.getUserById(id)
+
+            if (user) {
+                const updatedUser = await Users.updateUser(changes, id)
+                res.status(201).json(updatedUser)
+            } else {
+                res.status(400).json({
+                    message: 'Could not find user with the given id.'
+                })
+            }
+        } catch (err) {
+            res.status(500).json({
+                message: "Failed to update the user."
+            })
+        }
+    } else {
+        res.status(401).json({
+            message: "Users can only update their own information."
+        })
+    }
+})
+
+//Middleware used to generate a new JSON token
 function generateToken(user) {
     const jwtPayload = {
         subject: user.id,

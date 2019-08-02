@@ -54,7 +54,7 @@ router.delete('/save/:user_id', restricted, async (req, res) => {
     }
 })
 
-//call data science endpoint
+//Sends entered description to the database and sends back recommended books to user.
 
 router.post('/recommend', (req, res) => {
     const { description } = req.body
@@ -62,7 +62,7 @@ router.post('/recommend', (req, res) => {
     axios.get(`http://brbhtest-env-1.ssrvdevc34.us-east-1.elasticbeanstalk.com/${description}`)
         .then(resp => {
             console.log(resp.data)
-            res.send({ list: resp.data })
+            res.status(200).json({ list: resp.data })
         })
 })
 
@@ -91,17 +91,6 @@ router.post('/recommend', (req, res) => {
         })
     }
 })*/
-
-//Sends entered description to the database and sends back recommended books.
-router.get('/', async (req, res) => {
-    try {
-        const { description } = req.body
-    } catch {
-        res.status(500).json({
-            message: "There is no data to return."
-        })
-    }
-})
 
 
 

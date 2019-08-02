@@ -7,6 +7,7 @@ const bookAlreadySaved = require('../middleware/bookAlreadySaved.js')
 const bookInDbCheck = require('../middleware/bookInDbCheck.js')
 
 const router = express.Router();
+const axios = require('axios')
 
 //saves a book to the user's saved list. Must be logged in to access.
 router.post('/save/:id', restricted, bookInDbCheck, bookAlreadySaved, async (req, res) => {
@@ -51,6 +52,18 @@ router.delete('/save/:user_id', restricted, async (req, res) => {
             message: 'Failed to delete book.'
         });
     }
+})
+
+//call data science endpoint
+
+router.post('/recommend', (req, res) => {
+    const { description } = req.body
+
+    axios.get(`http://better-reads-cors-vector-2.rvpsipbyha.us-east-1.elasticbeanstalk.com/${description}`)
+        .then(resp => {
+            console.log(resp.data)
+            res.send({ list: resp.data })
+        })
 })
 
 //adds a book to our database.

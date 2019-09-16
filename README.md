@@ -4,7 +4,7 @@
 
 ## TDD:
 
-## Link to live project: https://better-reads.netlify.com/
+## Link to live project: https://better-reads.netlify.com/ (The data science team has taken down their Flask server, so the recommendation system no longer operates.)
 
 ## API Endpoint documentation and instruction: https://documenter.getpostman.com/view/8283723/SVYkx1vA?version=latest
 
